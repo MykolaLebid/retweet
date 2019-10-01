@@ -36,6 +36,9 @@ add_executable(test_retweet "")
 target_sources(test_retweet
 	PRIVATE
 	test_main.cpp
+	retweet_test.cpp
+	tweet.cpp
+	tweet_collection.cpp
 	)
 
 target_link_libraries(test_retweet
