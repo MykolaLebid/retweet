@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "tweet_collection.h"
+#include <gmock/gmock.h>
 
 using namespace ::testing;
 
@@ -9,7 +10,7 @@ public:
 };
 
 TEST_F(TestRetweetCollection, IsEmptyWhenCreated) {
-	ASSERT_TRUE(collection.isEmpty());
+	ASSERT_THAT(collection.isEmpty(), Eq(true));
 }
 
 
@@ -18,3 +19,7 @@ TEST_F(TestRetweetCollection, HasSizeZeroWhenCreated) {
 	ASSERT_EQ(collection.size(), 0);
 }
 
+TEST_F(TestRetweetCollection, HasNotSizeZeroWhenAdd) {
+	
+	ASSERT_EQ(collection.size(), 0);
+}
