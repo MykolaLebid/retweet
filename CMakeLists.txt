@@ -12,24 +12,76 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # download Google Test sources on code project repo 
 # at configure time using FetchContent
+#  include(FetchContent)
+#  FetchContent_Declare(
+#    googletest
+#    GIT_REPOSITORY https://github.com/google/googletest.git
+#    GIT_TAG       master
+#  )
+#
+#  FetchContent_GetProperties(googletest)
+#
+#  if(NOT googletest_POPULATED)
+#    FetchContent_Populate(googletest)
+#
+#    # Prevent GoogleTest from overriding our compiler/linker options
+#    # when building with Visual Studio
+#    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#    # Prevent GoogleTest from using PThreads
+#    set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
+#
+#    add_subdirectory(
+#      ${googletest_SOURCE_DIR}
+#      ${googletest_BINARY_DIR}
+#      )
+#
+#    # Silence std::tr1 warning on MSVC
+#    if(MSVC)
+#      foreach(_tgt gtest gtest_main gmock gmock_main)
+#        target_compile_definitions(${_tgt}
+#          PRIVATE
+#            "_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING"
+#          )
+#      endforeach()
+#    endif()
+#  endif()
 
-include(FetchContent)
 
-FetchContent_Declare(
-	googletest
-	GIT_REPOSITORY https://github.com/google/googletest.git
-	GIT_TAG release-1.8.0
-)
+ include(FetchContent)
+ 
+ FetchContent_Declare(
+ 	googletest
+ 	GIT_REPOSITORY https://github.com/google/googletest.git
+ 	GIT_TAG master
+ )
+ 
+ if (NOT googletest_POPULATED)
+ 	FetchContent_Populate(googletest)
+ 
+  #adds the targers: gtest, gtest_main, gmock, gmock_main
+   add_subdirectory(
+ 		${googletest_SOURCE_DIR}
+ 		${googletest_BINARY_DIR}
+ 	)
 
-if (NOT googletest_POPULATED)
-	FetchContent_Populate(googletest)
-	add_subdirectory(
-		${googletest_SOURCE_DIR}
-		${googletest_BINARY_DIR}
-	)
-# some changes will be needed for Windows. See CMake Cookbook by Radovan 
-# Bast and Roberti google test installation chapter
-endif()
+  # Prevent GoogleTest from overriding our compiler/linker options
+  # when building with Visual Studio
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  # Prevent GoogleTest from using PThreads
+  set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
+  # some changes will be needed for Windows. See CMake Cookbook by Radovan 
+  # Bast and Roberti google test installation chapter
+ 
+   # Silence std::tr1 warning on MSVC
+   if(MSVC)
+     foreach(_tgt gtest gtest_main gmock gmock_main)
+       target_compile_definitions(${_tgt}
+         PRIVATE
+           "_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING"
+         )
+     endforeach()
+   endif()
+ endif()
 
 add_executable(test_retweet "")
 
@@ -46,7 +98,7 @@ target_sources(test_retweet
 
 target_link_libraries(test_retweet
 	PRIVATE
-	gtest_main
+	gmock_main
 	)
 enable_testing()
 
